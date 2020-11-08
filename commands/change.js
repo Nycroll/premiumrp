@@ -13,7 +13,7 @@ module.exports.run = async (client, message, args) => {
         var embed = new discord.MessageEmbed()
             .setTitle("Gebruik")
             .setColor("#ffc843")
-            .setDescription(`Maak een changelog mededeling door gebruik te maken van: \n !change titel ${seperator} bericht ${seperator} kleur ${seperator} kanaal`);
+            .setDescription(`Maak een announcement door gebruik te maken van: \n !change titel ${seperator} bericht ${seperator} kleur ${seperator} kanaal`);
 
         return message.reply(embed);
 
