@@ -1,14 +1,6 @@
 const discord = require("discord.js");
 
-module.exports.run = {
-  name: "ban",
-  category: "tester",
-  description: "Ban systeem Premium Roleplay",
-  usage: "ban <@gebruikersnaam> <reden>",
-  cooldown: 50000,
-  botPermission: ["BAN_MEMBERS"],
-  authorPermission: ["BAN_MEMBERS"],
-  run: async (client, message, args) => {
+module.exports.run = async (client, message, args) => {
     
     if(!message.member.hasPermission("BAN_MEMBERS")) {
       return message.channel.send(`**${message.author.username}**, Je hebt geen permanentie om iemand te verbannen`)
@@ -47,4 +39,13 @@ module.exports.run = {
     
     
   }
+
+module.exports.help = {
+    name: "ban",
+    category: "tester",
+    description: "Ban systeem Premium Roleplay",
+    usage: "ban <@gebruikersnaam> <reden>",
+    cooldown: 50000,
+    botPermission: ["BAN_MEMBERS"],
+    authorPermission: ["BAN_MEMBERS"],
 }
