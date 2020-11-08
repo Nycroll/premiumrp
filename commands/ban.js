@@ -2,6 +2,8 @@ const discord = require("discord.js");
 
 module.exports.run = async (client, message, args) => {
 
+        if (command === `${prefix}kick`) {
+
         const args = message.content.slice(prefix.length).split(/ +/);
 
         if (!message.member.hasPermission("KICK_MEMBERS")) return message.reply("sorry jij kan dit niet");
@@ -35,7 +37,7 @@ module.exports.run = async (client, message, args) => {
 
         message.channel.send(embedPrompt).then(async msg => {
 
-            var emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
+            var emoji = await promptMessage(msg, message.author, 30, ['✅', '❌']);
 
 
             // We kijken dat het de gebruiker is die het als eerste heeft uitgevoerd.
@@ -53,7 +55,7 @@ module.exports.run = async (client, message, args) => {
             //     });
 
 
-            if (emoji === "✅") {
+            if (emoji === '✅') {
 
                 msg.delete();
 
@@ -63,7 +65,7 @@ module.exports.run = async (client, message, args) => {
 
                 message.reply(embed);
 
-            } else if (emoji === "❌") {
+            } else if (emoji === '❌') {
 
                 msg.delete();
 
@@ -110,7 +112,7 @@ module.exports.run = async (client, message, args) => {
 
         message.channel.send(embedPrompt).then(async msg => {
 
-            var emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
+            var emoji = await promptMessage(msg, message.author, 30, ['✅', '❌']);
 
 
             // We kijken dat het de gebruiker is die het als eerste heeft uitgevoerd.
@@ -128,7 +130,7 @@ module.exports.run = async (client, message, args) => {
             //     });
 
 
-            if (emoji === "✅") {
+            if (emoji === '✅') {
 
                 msg.delete();
 
@@ -139,7 +141,7 @@ module.exports.run = async (client, message, args) => {
 
                 message.reply(embed);
 
-            } else if (emoji === "❌") {
+            } else if (emoji === '❌') {
 
                 msg.delete();
 
@@ -167,4 +169,12 @@ async function promptMessage(message, author, time, reactions) {
     // We kijken als de reactie juist is, dus met die filter en ook het aantal keren en binnen de tijd.
     // Dan kunnen we bericht terug sturen met dat icoontje dat is aangeduid.
     return message.awaitReactions(filter, { max: 1, time: time }).then(collected => collected.first() && collected.first().emoji.name);
+}
+
+}
+
+module.exports.help = {
+    name: "change",
+    description: "Geeft al de verschillende commands",
+    category: "Informatie"
 }
