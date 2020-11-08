@@ -1,9 +1,6 @@
 const Discord = require("discord.js");
-module.exports = {
-  name: "poll",
-  description: "Maak een eenvoudige ja of nee poll",
-  category: "test",
-  run: async (bot, message, args) => {
+module.exports.run = async (client, message, args) => {
+  
     if (!message.member.permissions.has("ADMINISTRATOR"))
       return message.channel.send(
         `Je hebt geen admin, ${message.author.username}`
@@ -30,4 +27,7 @@ module.exports = {
     await msg.react("👍");
     await msg.react("👎");
   },
-};
+
+module.exports.help = {
+    name: "pol"
+}
