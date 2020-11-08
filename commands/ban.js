@@ -2,77 +2,153 @@ const discord = require("discord.js");
 
 module.exports.run = async (client, message, args) => {
 
-    if (!args[1]) return message.reply("Geen gebruiker opgegeven.");
+        const args = message.content.slice(prefix.length).split(/ +/);
 
-    if (!args[2]) return message.reply("Gelieve een redenen op te geven.");
+        if (!message.member.hasPermission("KICK_MEMBERS")) return message.reply("sorry jij kan dit niet");
 
-    if (!message.member.hasPermission("BAN_MEMBERS")) return message.reply("sorry jij kan dit niet");
+        if (!message.guild.me.hasPermission("KICK_MEMBERS")) return message.reply("Geen perms");
 
-    if (!message.guild.me.hasPermission("BAN_MEMBERS")) return message.reply("Geen perms");
+        if (!args[1]) return message.reply("Geen gebruiker opgegeven.");
 
-    var banUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[1]));
+        if (!args[2]) return message.reply("Gelieve een redenen op te geven.");
 
-    var reason = args.slice(2).join(" ");
+        var kickUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[1]));
 
-    if (!banUser) return message.reply("Kan de gebruiker niet vinden.");
+        var reason = args.slice(2).join(" ");
 
-    var embed = new discord.MessageEmbed()
-        .setColor("#ff0000")
-        .setThumbnail(banUser.user.displayAvatarURL)
-        .setFooter(message.member.displayName, message.author.displayAvatarURL)
-        .setTimestamp()
-        .setDescription(`** Geband:** ${banUser} (${banUser.id})
+        if (!kickUser) return message.reply("Kan de gebruiker niet vinden.");
+
+        var embed = new discord.MessageEmbed()
+            .setColor("#ff0000")
+            .setThumbnail(kickUser.user.displayAvatarURL)
+            .setFooter(message.member.displayName, message.author.displayAvatarURL)
+            .setTimestamp()
+            .setDescription(`** Gekickt:** ${kickUser} (${kickUser.id})
+            **Gekickt door:** ${message.author}
+            **Redenen: ** ${reason}`);
+
+        var embedPrompt = new discord.MessageEmbed()
+            .setColor("GREEN")
+            .setAuthor("Gelieve te reageren binnen 30 sec.")
+            .setDescription(`Wil je ${kickUser} kicken?`);
+
+
+        message.channel.send(embedPrompt).then(async msg => {
+
+            var emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
+
+
+            // We kijken dat het de gebruiker is die het als eerste heeft uitgevoerd.
+            // message.channel.awaitMessages(m => m.author.id == message.author.id,
+            //     { max: 1, time: 30000 }).then(collected => {
+
+            //         if (collected.first().content.toLowerCase() == 'yes') {
+            //             message.reply('Kick speler.');
+            //         }
+            //         else
+            //             message.reply('Geanuleerd');
+
+            //     }).catch(() => {
+            //         message.reply('Geen antwoord na 30 sec, geanuleerd.');
+            //     });
+
+
+            if (emoji === "✅") {
+
+                msg.delete();
+
+                kickUser.kick(reason).catch(err => {
+                    if (err) return message.channel.send(`Er is iets foutgegaan.`);
+                });
+
+                message.reply(embed);
+
+            } else if (emoji === "❌") {
+
+                msg.delete();
+
+                message.reply("Kick geanuleerd").then(m => m.delete(5000));
+
+            }
+
+        });
+    }
+
+
+    if (command === `${prefix}ban`) {
+
+        const args = message.content.slice(prefix.length).split(/ +/);
+
+        if (!args[1]) return message.reply("Geen gebruiker opgegeven.");
+
+        if (!args[2]) return message.reply("Gelieve een redenen op te geven.");
+
+        if (!message.member.hasPermission("BAN_MEMBERS")) return message.reply("sorry jij kan dit niet");
+
+        if (!message.guild.me.hasPermission("BAN_MEMBERS")) return message.reply("Geen perms");
+
+        var banUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[1]));
+
+        var reason = args.slice(2).join(" ");
+
+        if (!banUser) return message.reply("Kan de gebruiker niet vinden.");
+
+        var embed = new discord.MessageEmbed()
+            .setColor("#ff0000")
+            .setThumbnail(banUser.user.displayAvatarURL)
+            .setFooter(message.member.displayName, message.author.displayAvatarURL)
+            .setTimestamp()
+            .setDescription(`** Geband:** ${banUser} (${banUser.id})
             **Geband door:** ${message.author}
             **Redenen: ** ${reason}`);
 
-    var embedPrompt = new discord.MessageEmbed()
-        .setColor("GREEN")
-        .setAuthor("Gelieve te reageren binnen 30 sec.")
-        .setDescription(`Wil je ${banUser} bannen?`);
+        var embedPrompt = new discord.MessageEmbed()
+            .setColor("GREEN")
+            .setAuthor("Gelieve te reageren binnen 30 sec.")
+            .setDescription(`Wil je ${banUser} bannen?`);
 
 
-    message.channel.send(embedPrompt).then(async msg => {
+        message.channel.send(embedPrompt).then(async msg => {
 
-        var emoji = await promptMessage(msg, message.author, 30, ["âœ…", "âŒ"]);
-
-
-        // We kijken dat het de gebruiker is die het als eerste heeft uitgevoerd.
-        // message.channel.awaitMessages(m => m.author.id == message.author.id,
-        //     { max: 1, time: 30000 }).then(collected => {
-
-        //         if (collected.first().content.toLowerCase() == 'yes') {
-        //             message.reply('Kick speler.');
-        //         }
-        //         else
-        //             message.reply('Geanuleerd');
-
-        //     }).catch(() => {
-        //         message.reply('Geen antwoord na 30 sec, geanuleerd.');
-        //     });
+            var emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
 
 
-        if (emoji === "âœ…") {
+            // We kijken dat het de gebruiker is die het als eerste heeft uitgevoerd.
+            // message.channel.awaitMessages(m => m.author.id == message.author.id,
+            //     { max: 1, time: 30000 }).then(collected => {
 
-            msg.delete();
+            //         if (collected.first().content.toLowerCase() == 'yes') {
+            //             message.reply('Kick speler.');
+            //         }
+            //         else
+            //             message.reply('Geanuleerd');
+
+            //     }).catch(() => {
+            //         message.reply('Geen antwoord na 30 sec, geanuleerd.');
+            //     });
 
 
-            banUser.ban(reason).catch(err => {
-                if (err) return message.channel.send(`Er is iets foutgegaan.`);
-            });
+            if (emoji === "✅") {
 
-            message.reply(embed);
+                msg.delete();
 
-        } else if (emoji === "âŒ") {
+                
+                banUser.ban(reason).catch(err => {
+                    if (err) return message.channel.send(`Er is iets foutgegaan.`);
+                });
 
-            msg.delete();
+                message.reply(embed);
 
-            message.reply("Ban geanuleerd").then(m => m.delete(5000));
+            } else if (emoji === "❌") {
 
-        }
+                msg.delete();
 
-    });
+                message.reply("Ban geanuleerd").then(m => m.delete(5000));
 
-}
+            }
+
+        });
+    }
 
 // Emojis aan teksten kopellen.
 async function promptMessage(message, author, time, reactions) {
@@ -91,10 +167,4 @@ async function promptMessage(message, author, time, reactions) {
     // We kijken als de reactie juist is, dus met die filter en ook het aantal keren en binnen de tijd.
     // Dan kunnen we bericht terug sturen met dat icoontje dat is aangeduid.
     return message.awaitReactions(filter, { max: 1, time: time }).then(collected => collected.first() && collected.first().emoji.name);
-}
-
-module.exports.help = {
-    name: "ban",
-    description: "Ban iemand",
-    category: "Algemeen"
 }
