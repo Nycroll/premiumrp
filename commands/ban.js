@@ -1,6 +1,6 @@
 const discord = require("discord.js");
 
-module.exports.run = async (client, message, argument) => {
+module.exports.run = async (client, message, args) => {
 
     if (!args[1]) return message.reply("Geen gebruiker opgegeven.");
 
