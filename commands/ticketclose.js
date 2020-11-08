@@ -17,7 +17,7 @@ module.exports.run = async (client, message, args) => {
             .setFooter("Ticket gesloten");
 
         // Channel voor logging
-        var ticketChannel = message.member.guild.channels.cache.find(channel => channel.name === "log");
+        var ticketChannel = message.member.guild.channels.cache.find(channel => channel.name === "tlog");
         if (!ticketChannel) return message.reply("Kanaal bestaat niet");
 
         ticketChannel.send(embedCreateTicket);
