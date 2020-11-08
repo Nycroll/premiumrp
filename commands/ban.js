@@ -178,7 +178,7 @@ async function promptMessage(message, author, time, reactions) {
 
 
 module.exports.help = {
-    name: "change",
+    name: "ban",
     description: "Geeft al de verschillende commands",
     category: "Informatie"
 }
