@@ -1,27 +1,33 @@
-const discord = require("discord.js");
-
-module.exports.run = async (client, message, args) => {
-
-    if(message.author.bot || message.channel.type === "dm") return;
-
-    const messageArray = message.content.split(' ');
-	const cmd = messageArray[0];
-	const args = messageArray.slice(1);
-
-    if (cmd === '?poll'){
-        let pollChannel = message.mentions.channels.first();
-        let pollDescription = args.slice(1).join(' ');
-
-        let embedPoll = new Discord.MessageEmbed()
-        .setTitle('😲 Nieuwe Poll! 😲')
-        .setDescription(pollDescription)
-        .setColor('#ffc843')
-        let msgEmbed = await pollChannel.send(embedPoll);
-        await msgEmbed.react('👍')
-        await msgEmbed.react('👎')
+const Discord = require("discord.js");
+module.exports = {
+  name: "poll",
+  description: "Maak een eenvoudige ja of nee poll",
+  category: "test",
+  run: async (bot, message, args) => {
+    if (!message.member.permissions.has("ADMINISTRATOR"))
+      return message.channel.send(
+        `Je hebt geen admin, ${message.author.username}`
+      );
+    const channel =
+      message.mentions.channels.first() ||
+      message.guild.channels.cache.get(args[0]);
+    if (!channel) {
+      return message.channel.send(
+        `Je hebt het id van je kanaal niet genoemd / gegeven!`
+      );
     }
-}
-  
-module.exports.help = {
-    name: "pol"
-}
+    let question = message.content
+      .split(`${bot.prefix}poll ${channel} `)
+      .join("");
+    if (!question)
+      return message.channel.send(`Je hebt je vraag niet gesteld!`);
+    const Embed = new Discord.MessageEmbed()
+      .setTitle(`Nieuwe poll!`)
+      .setDescription(`${question}`)
+      .setFooter(`${message.author.username} heeft deze poll gemaakt.`)
+      .setColor(`RANDOM`);
+    let msg = await bot.channels.cache.get(channel.id).send(Embed);
+    await msg.react("👍");
+    await msg.react("👎");
+  },
+};
