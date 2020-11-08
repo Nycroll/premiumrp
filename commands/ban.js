@@ -2,8 +2,6 @@ const discord = require("discord.js");
 
 module.exports.run = async (client, message, argument) => {
 
-    const args = message.content.slice(prefix.length).split(/ +/);
-
     if (!args[1]) return message.reply("Geen gebruiker opgegeven.");
 
     if (!args[2]) return message.reply("Gelieve een redenen op te geven.");
