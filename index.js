@@ -3,7 +3,6 @@ const Discord = require("discord.js");
 const fs = require("fs");
 const bot = new Discord.Client({disableEveryone: true});
 bot.commands = new Discord.Collection();
-message.guild = new Discord.Collection();
 var prefix = botConfig.prefix;
 
 
