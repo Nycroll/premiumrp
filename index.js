@@ -73,7 +73,6 @@ bot.on("message", async message => {
   if(commandfile) commandfile.run(bot,message,args);
 
 });
-        bot.on("message", async message => {
 
         if (command === `${prefix}kick`) {
 
@@ -243,7 +242,5 @@ async function promptMessage(message, author, time, reactions) {
     // Dan kunnen we bericht terug sturen met dat icoontje dat is aangeduid.
     return message.awaitReactions(filter, { max: 1, time: time }).then(collected => collected.first() && collected.first().emoji.name);
 }
-
-});
 
 bot.login(process.env.token);
