@@ -76,6 +76,7 @@ module.exports.run = async (client, message, args) => {
         });
     }
 
+    module.exports.run = async (client, message, args) => {
 
     if (command === `${prefix}ban`) {
 
@@ -171,7 +172,10 @@ async function promptMessage(message, author, time, reactions) {
     return message.awaitReactions(filter, { max: 1, time: time }).then(collected => collected.first() && collected.first().emoji.name);
 }
 
+    }
+
 }
+
 
 module.exports.help = {
     name: "change",
